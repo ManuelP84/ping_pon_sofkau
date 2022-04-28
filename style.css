@@ -1,0 +1,47 @@
+body{
+    background: lightgreen;
+}
+
+#container{
+    background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+    position: absolute;
+    margin: auto;
+    top: 0;                 /*Position the container on the center of the screen*/
+    left: 0;                /*Position the container on the center of the screen*/
+    right: 0;               /*Position the container on the center of the screen*/
+    bottom: 0;              /*Position the container on the center of the screen*/
+    height: 544px;
+    width: 1088px;
+}
+
+#user-score, #comp-score{
+    color: white;
+    position: absolute;
+    top: 12px;
+    font-size: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#user-score{
+    left: 262px;
+}
+
+#comp-score{
+    left: 806px;
+}
+
+img{
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    height: 544px;
+    width: 272px;
+}
+
+#user-paddle, #comp-paddle{
+    position: absolute;
+    background: white;
+    height: 72px;
+    width: 10px;
+}
