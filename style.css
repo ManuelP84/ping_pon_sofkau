@@ -2,7 +2,7 @@ body{
     background: lightgreen;
 }
 
-#container{
+#container1{
     background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
     position: absolute;
     margin: auto;
@@ -12,6 +12,15 @@ body{
     bottom: 0;              /*Position the container on the center of the screen*/
     height: 544px;
     width: 1088px;
+}
+
+#container2{
+    color: #302b63;
+    position: absolute;
+    padding-left: 2%;
+    top: 85px;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #user-score, #comp-score{
