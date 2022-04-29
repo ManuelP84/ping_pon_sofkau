@@ -16,7 +16,7 @@ let ID
 
 let Vx = -1
 let Vy = -1
-let V = Math.sqrt(Math.pow(Vx, 2) + Math.pow(Vy))
+let V = Math.sqrt(Math.pow(Vx, 2) + Math.pow(Vy, 2))
 
 document.addEventListener('keydown', (e) => {       /*Event when a key is pressed*/
     if(e.keyCode == '87'){
@@ -36,14 +36,13 @@ document.addEventListener('keyup', (e) => {         /*Event when a key is releas
     }
 })
 
-
 gameLoop()
 
 function reset(){
     clearInterval(ID)
     Vx = -1
     Vy = -1
-    let V = Math.sqrt(Math.pow(Vx, 2) + Math.pow(Vy))
+    V = Math.sqrt(Math.pow(Vx, 2) + Math.pow(Vy,2))
     ball.style.marginTop = '262px'
     ball.style.marginLeft = '534px'
     gameLoop()
@@ -51,7 +50,7 @@ function reset(){
 
 function gameLoop(){        /*Flow of the game*/
     setTimeout(() => {
-        ID = setInterval(()=>{
+        ID = setInterval(()=>{            
 
             if(marginLeft(ball) < 0){
                 document.querySelector('#comp-score').innerHTML = Number(document.querySelector('#comp-score').innerHTML) + 1
@@ -69,6 +68,31 @@ function gameLoop(){        /*Flow of the game*/
                 Vy = -Vy
             }
 
+            let paddle = (marginLeft(ball) + 10 < 544) ? userPaddle : compPaddle
+
+            if(collisionDetected(paddle)){
+                
+                let angle
+                let type = (marginLeft(ball) + 10 < 544)?'user' : 'comp'
+
+                if(ball.centerY < paddle.centerY){
+                    angle = (type=='user' ? -Math.PI/4 : (-3*Math.PI)/4)
+                }
+                else if(ball.centerY > paddle.centerY){
+                    angle = (type=='user' ? Math.PI/4 : (3*Math.PI)/4)
+                }
+                else if(ball.centerY == paddle.centerY){
+                    angle = (type=='user' ? 0 : (Math.PI))
+                }
+                
+                V += 0.3
+                Vx = V * Math.cos(angle)
+                Vy = V * Math.sin(angle)
+            }
+
+            let compLevel = 0.1
+            compPaddle.style.marginTop = `${marginTop(compPaddle) + ((ball.centerY - (marginTop(compPaddle) + 36))) * compLevel}px`
+
             ball.style.marginLeft = `${marginLeft(ball) + Vx}px`
             ball.style.marginTop = `${marginTop(ball) + Vy}px`
 
@@ -78,8 +102,32 @@ function gameLoop(){        /*Flow of the game*/
             else if(s_Pressed && marginTop(userPaddle) < 472){
                 userPaddle.style.marginTop = `${marginTop(userPaddle) + 2}px`
             }
+
+            if(marginTop(compPaddle) < 0){
+                compPaddle.style.marginTop = '0px'
+            } else if(marginTop(compPaddle) > 472 ){
+                compPaddle.style.marginTop = '472px'
+            }
         }, 5)
     }, 500)
+}
+
+function collisionDetected(paddle){
+    ball.top = marginTop(ball)
+    ball.bottom = marginTop(ball) + 20
+    ball.left = marginLeft(ball) 
+    ball.right = marginLeft(ball) + 20
+    ball.centerX = marginLeft(ball) + 10
+    ball.centerY = marginTop(ball) + 10
+
+    paddle.top = marginTop(paddle)
+    paddle.bottom = marginTop(paddle) + 72
+    paddle.left = marginLeft(paddle)
+    paddle.right = marginLeft(paddle) + 10
+    paddle.centerX = marginLeft(paddle) + 5
+    paddle.centerY = marginTop(paddle) + 36
+    
+    return ball.left < paddle.right && ball.top < paddle.bottom && ball.right > paddle.left && ball.bottom > paddle.top
 }
 
 function marginTop(elem){
